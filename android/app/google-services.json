@@ -1,0 +1,89 @@
+{
+  "project_info": {
+    "project_number": "226209163715",
+    "firebase_url": "https://oria-68e38.firebaseio.com",
+    "project_id": "oria-68e38",
+    "storage_bucket": "oria-68e38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226209163715:android:6f8a5256fafb0a0b5d3576",
+        "android_client_info": {
+          "package_name": "com.jeetg57.oria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226209163715-792jon1mke9csj4qrgofc5mf6q1dhm1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFBwQIZa75vXwEEPk5Y4Ui8I6A4DcKbMQ"
+        },
+        {
+          "current_key": "AIzaSyAjk7ly2iG-fCmKRzj8VPRLjdlnr6TboBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226209163715-792jon1mke9csj4qrgofc5mf6q1dhm1n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "226209163715-l2sk15gnv68465u5p5oh0on893c7v7fo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "abdihamid.meddoctor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226209163715:android:cbe5e771e01d3f705d3576",
+        "android_client_info": {
+          "package_name": "com.jeetg57.oriadoctor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226209163715-792jon1mke9csj4qrgofc5mf6q1dhm1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFBwQIZa75vXwEEPk5Y4Ui8I6A4DcKbMQ"
+        },
+        {
+          "current_key": "AIzaSyAjk7ly2iG-fCmKRzj8VPRLjdlnr6TboBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226209163715-792jon1mke9csj4qrgofc5mf6q1dhm1n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "226209163715-l2sk15gnv68465u5p5oh0on893c7v7fo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "abdihamid.meddoctor"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
