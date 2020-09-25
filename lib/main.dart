@@ -1,13 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:oria_doctor/screens/appointments/upcomingAppointments.dart';
+import 'package:oria_doctor/screens/schedule/ScheduleInput.dart';
 import 'package:oria_doctor/screens/wrapper.dart';
 import 'package:oria_doctor/services/auth.dart';
 import 'package:provider/provider.dart';
 
 import 'Models/Doctor.dart';
 
-void main() async{
-   WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(home: MyApp()));
 }
@@ -25,11 +27,12 @@ class MyApp extends StatelessWidget {
           '/': (context) => Wrapper(),
           // When navigating to the "/second" route, build the SecondScreen widget.
           // '/doctors': (context) => Doctors(),
-          // '/appointments': (context) => MyAppointments(),
+          '/upcoming-appointments': (context) => UpcomingAppointments(),
+          '/schedule-input': (context) => ScheduleInput(),
+
           // '/appointment_status': (context) => Status(),
         },
       ),
     );
   }
 }
-

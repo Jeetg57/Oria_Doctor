@@ -24,7 +24,7 @@ class HomeMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<DoctorFB>(context);
-    final double devWidth = MediaQuery.of(context).size.width;
+    // final double devWidth = MediaQuery.of(context).size.width;
     // final double devHeight = MediaQuery.of(context).size.height;
     return StreamBuilder<DoctorData>(
         stream: DatabaseService(uid: user.uid).userData,
@@ -68,7 +68,7 @@ class HomeMain extends StatelessWidget {
                   body: Container(
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
                     width: double.infinity,
-                    child: Column(                                          
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -182,16 +182,21 @@ class HomeMain extends StatelessWidget {
                                 fontSize: 30.0,
                                 fontFamily: "Poppins"),
                           ),
-                          Text(
-                            "Hope you're well today",
-                            style: TextStyle(
-                                fontSize: 18.0, fontFamily: "Poppins"),
-                          ),
+                          // Text(
+                          //   "Hope you're well today",
+                          //   style: TextStyle(
+                          //       fontSize: 18.0, fontFamily: "Poppins"),
+                          // ),
                           SizedBox(
                             height: 10.0,
                           ),
-                          
-                         
+                          Text(
+                            "Your Schedule for today",
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontFamily: "Poppins",
+                            ),
+                          ),
                           Row(
                             children: [
                               Expanded(
@@ -204,7 +209,8 @@ class HomeMain extends StatelessWidget {
                                       children: [
                                         ListTile(
                                           onTap: () => Navigator.pushNamed(
-                                              context, "/appointments"),
+                                              context,
+                                              "/upcoming-appointments"),
                                           contentPadding: EdgeInsets.symmetric(
                                               vertical: 8.0, horizontal: 10.0),
                                           title: Text(
@@ -221,6 +227,48 @@ class HomeMain extends StatelessWidget {
                                           ),
                                           subtitle: Text(
                                             "View appointments made",
+                                            style: TextStyle(
+                                                fontSize: 14.0,
+                                                color: Colors.grey,
+                                                fontFamily: "Poppins"),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  child: Card(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        ListTile(
+                                          onTap: () => Navigator.pushNamed(
+                                              context, "/schedule-input"),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 8.0, horizontal: 10.0),
+                                          title: Text(
+                                            "Schedule",
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Poppins"),
+                                          ),
+                                          leading: Icon(
+                                            Icons.timer,
+                                            size: 40.0,
+                                            color: Colors.green,
+                                          ),
+                                          subtitle: Text(
+                                            "Edit my schedule",
                                             style: TextStyle(
                                                 fontSize: 14.0,
                                                 color: Colors.grey,
