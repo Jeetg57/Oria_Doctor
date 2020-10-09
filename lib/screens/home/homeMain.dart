@@ -1,16 +1,72 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:oria_doctor/Models/Doctor.dart';
+import 'package:oria_doctor/Models/Message.dart';
 import 'package:oria_doctor/services/auth.dart';
 import 'package:oria_doctor/services/database.dart';
 import 'package:oria_doctor/shared/loadingWidget.dart';
 import 'package:provider/provider.dart';
 
-class HomeMain extends StatelessWidget {
+class HomeMain extends StatefulWidget {
+  @override
+  _HomeMainState createState() => _HomeMainState();
+}
+
+class _HomeMainState extends State<HomeMain> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final List<Message> messages = [];
   final GlobalKey<InnerDrawerState> _innerDrawerKey =
       GlobalKey<InnerDrawerState>();
+  final DatabaseService databaseService = DatabaseService();
+  StreamSubscription iosSubscription;
+  void initState() {
+    super.initState();
+
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+      print("onMessage: $message");
+      final notification = message['notification'];
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                content: ListTile(
+                  title: Text(notification['title']),
+                  subtitle: Text(
+                    notification['body'],
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('OK'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              )); // setState(() {
+      //   messages.add(
+      //       Message(title: notification['title'], body: notification['body']));
+      // });
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print("onMLaunch: $message");
+    }, onResume: (Map<String, dynamic> message) async {
+      print("onResume: $message");
+    });
+    if (Platform.isIOS) {
+      iosSubscription =
+          _firebaseMessaging.onIosSettingsRegistered.listen((event) {
+        databaseService.saveDeviceToken();
+      });
+      _firebaseMessaging.requestNotificationPermissions(
+          const IosNotificationSettings(sound: true, alert: true, badge: true));
+    } else {
+      databaseService.saveDeviceToken();
+    }
+  }
 
   void _toggle() {
     _innerDrawerKey.currentState.toggle(
@@ -21,6 +77,7 @@ class HomeMain extends StatelessWidget {
   }
 
   final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<DoctorFB>(context);
@@ -240,48 +297,54 @@ class HomeMain extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  child: Card(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        ListTile(
-                                          onTap: () => Navigator.pushNamed(
-                                              context, "/schedule-input"),
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 8.0, horizontal: 10.0),
-                                          title: Text(
-                                            "Schedule",
-                                            style: TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: "Poppins"),
-                                          ),
-                                          leading: Icon(
-                                            Icons.timer,
-                                            size: 40.0,
-                                            color: Colors.green,
-                                          ),
-                                          subtitle: Text(
-                                            "Edit my schedule",
-                                            style: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Colors.grey,
-                                                fontFamily: "Poppins"),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+
+                          Expanded(
+                            child: ListView(
+                              children: messages.map(buildMessage).toList(),
+                            ),
                           )
+                          // Row(
+                          //   children: [
+                          //     Expanded(
+                          //       flex: 1,
+                          //       child: Container(
+                          //         child: Card(
+                          //           child: Column(
+                          //             crossAxisAlignment:
+                          //                 CrossAxisAlignment.end,
+                          //             children: [
+                          //               ListTile(
+                          //                 onTap: () => Navigator.pushNamed(
+                          //                     context, "/schedule-input"),
+                          //                 contentPadding: EdgeInsets.symmetric(
+                          //                     vertical: 8.0, horizontal: 10.0),
+                          //                 title: Text(
+                          //                   "Schedule",
+                          //                   style: TextStyle(
+                          //                       fontSize: 20.0,
+                          //                       fontWeight: FontWeight.bold,
+                          //                       fontFamily: "Poppins"),
+                          //                 ),
+                          //                 leading: Icon(
+                          //                   Icons.timer,
+                          //                   size: 40.0,
+                          //                   color: Colors.green,
+                          //                 ),
+                          //                 subtitle: Text(
+                          //                   "Edit my schedule",
+                          //                   style: TextStyle(
+                          //                       fontSize: 14.0,
+                          //                       color: Colors.grey,
+                          //                       fontFamily: "Poppins"),
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // )
                         ],
                       ),
                     )));
@@ -290,4 +353,9 @@ class HomeMain extends StatelessWidget {
           }
         });
   }
+
+  Widget buildMessage(Message message) => ListTile(
+        title: Text(message.title),
+        subtitle: Text(message.body),
+      );
 }

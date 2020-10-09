@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:oria_doctor/Models/Appointment.dart';
@@ -6,8 +10,12 @@ import 'package:oria_doctor/Models/Doctor.dart';
 import 'package:oria_doctor/Models/UserData.dart';
 
 class DatabaseService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final String uid;
   DatabaseService({this.uid});
+  final FirebaseMessaging fcm = FirebaseMessaging();
+
   final StorageReference storageReferenceUser =
       FirebaseStorage().ref().child("userImages");
 
@@ -24,6 +32,23 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('doctor_schedule');
 
   final geo = Geoflutterfire();
+
+  saveDeviceToken() async {
+    String fcmToken = await fcm.getToken();
+    User user = _auth.currentUser;
+    if (fcmToken != null) {
+      await doctorsCollection
+          .doc(user.uid)
+          .collection('tokens')
+          .doc(fcmToken)
+          .set({
+        'token': fcmToken,
+        'createdAt': FieldValue.serverTimestamp(),
+        'platform': Platform.operatingSystem
+      });
+    }
+  }
+
   Future setAppointment(
       {String uid, String doctorId, DateTime dateTime}) async {
     try {
@@ -161,6 +186,19 @@ class DatabaseService {
     );
   }
 
+  _scheduleDataFromSnapshot(DocumentSnapshot snapshot) {
+    print(snapshot.data());
+    return ({
+      "Monday": snapshot.data()["Monday"] ?? [],
+      "Tuesday": snapshot.data()['Tuesday'] ?? [],
+      "Wednesday": snapshot.data()['Wednesday'] ?? [],
+      "Thursday": snapshot.data()['Thursday'] ?? [],
+      "Friday": snapshot.data()['Friday'] ?? [],
+      "Saturday": snapshot.data()['Saturday'] ?? [],
+      "Sunday": snapshot.data()['Sunday'] ?? [],
+    });
+  }
+
   // // get brews stream
   // Stream<List<DoctorData>> get doctors {
   //   return doctorsCollection.snapshots().map(_doctorListFromSnapshot);
@@ -192,6 +230,12 @@ class DatabaseService {
   //     );
   //   }).toList();
   // }
+  Stream schedule(doctorId) {
+    return doctorScheduleCollection
+        .doc(doctorId)
+        .snapshots()
+        .map(_scheduleDataFromSnapshot);
+  }
 
   Stream<PatientData> patientData(patientId) {
     return usersCollection
