@@ -248,9 +248,9 @@ class _HomeMainState extends State<HomeMain> {
                             height: 10.0,
                           ),
                           Text(
-                            "Your Schedule for today",
+                            "Hope you are well today!",
                             style: TextStyle(
-                              fontSize: 24.0,
+                              fontSize: 18.0,
                               fontFamily: "Poppins",
                             ),
                           ),
@@ -278,7 +278,7 @@ class _HomeMainState extends State<HomeMain> {
                                                 fontFamily: "Poppins"),
                                           ),
                                           leading: Icon(
-                                            Icons.timer,
+                                            Icons.book,
                                             size: 40.0,
                                             color: Colors.green,
                                           ),
@@ -297,7 +297,40 @@ class _HomeMainState extends State<HomeMain> {
                               ),
                             ],
                           ),
-
+                          Container(
+                            child: Card(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  ListTile(
+                                    onTap: () => Navigator.pushNamed(
+                                        context, "/schedule-input"),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 10.0),
+                                    title: Text(
+                                      "My Schedule",
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                    leading: Icon(
+                                      Icons.timer,
+                                      size: 40.0,
+                                      color: Colors.green,
+                                    ),
+                                    subtitle: Text(
+                                      "Change and view your schedule here",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                           Expanded(
                             child: ListView(
                               children: messages.map(buildMessage).toList(),

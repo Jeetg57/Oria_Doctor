@@ -29,7 +29,7 @@ class _AppointmentListState extends State<AppointmentList> {
               width: devWidth * 0.4,
             ),
             Text(
-              "Book some appointments and check back here!",
+              "Your appointments can be viewed once you receive a request!",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: "Poppins",
