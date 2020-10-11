@@ -37,3 +37,12 @@ var searchInputDecoration = InputDecoration(
   prefixIcon: Icon(Icons.search),
   border: InputBorder.none,
 );
+
+var noteInputDecoration = InputDecoration(
+  fillColor: Color.fromRGBO(234, 236, 238, 1),
+  filled: true,
+  focusColor: Colors.grey,
+  hoverColor: Colors.grey,
+  border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+);

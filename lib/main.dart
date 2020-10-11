@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           // When navigating to the "/second" route, build the SecondScreen widget.
           // '/doctors': (context) => Doctors(),
           '/upcoming-appointments': (context) => UpcomingAppointments(),
-          '/schedule-input': (context) => DoctorSchedule(),
+          '/schedule-input': (context) => ScheduleInput(),
 
           // '/appointment_status': (context) => Status(),
         },

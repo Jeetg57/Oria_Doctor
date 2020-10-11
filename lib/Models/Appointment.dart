@@ -1,4 +1,5 @@
 class Appointment {
+  final String id;
   final String doctorId;
   final String userId;
   final String approval;
@@ -6,5 +7,10 @@ class Appointment {
   final DateTime time;
 
   Appointment(
-      {this.doctorId, this.userId, this.approval, this.bookedAt, this.time});
+      {this.id,
+      this.doctorId,
+      this.userId,
+      this.approval,
+      this.bookedAt,
+      this.time});
 }

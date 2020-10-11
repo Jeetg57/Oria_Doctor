@@ -6,8 +6,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:oria_doctor/Models/Appointment.dart';
+import 'package:oria_doctor/Models/DocSchedule.dart';
 import 'package:oria_doctor/Models/Doctor.dart';
 import 'package:oria_doctor/Models/UserData.dart';
+import 'package:oria_doctor/Models/scheduleTime.dart';
 
 class DatabaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -82,26 +84,6 @@ class DatabaseService {
   //     return null;
   //   }
   // }
-
-  Future saveSchedule({
-    List<Map> monday,
-    List<Map> tuesday,
-    List<Map> wednesday,
-    List<Map> thursday,
-    List<Map> friday,
-    List<Map> saturday,
-    List<Map> sunday,
-  }) async {
-    return await doctorScheduleCollection.doc(uid).set({
-      "Monday": monday,
-      "Tuesday": tuesday,
-      "Wednesday": wednesday,
-      "Thursday": thursday,
-      "Friday": friday,
-      "Saturday": saturday,
-      "Sunday": sunday
-    });
-  }
 
   Future setUserDetails(
       {String name,
@@ -186,23 +168,34 @@ class DatabaseService {
     );
   }
 
-  _scheduleDataFromSnapshot(DocumentSnapshot snapshot) {
-    print(snapshot.data());
-    return ({
-      "Monday": snapshot.data()["Monday"] ?? [],
-      "Tuesday": snapshot.data()['Tuesday'] ?? [],
-      "Wednesday": snapshot.data()['Wednesday'] ?? [],
-      "Thursday": snapshot.data()['Thursday'] ?? [],
-      "Friday": snapshot.data()['Friday'] ?? [],
-      "Saturday": snapshot.data()['Saturday'] ?? [],
-      "Sunday": snapshot.data()['Sunday'] ?? [],
-    });
+  addToScheduleArray(String day, Map<String, dynamic> map) {
+    User user = _auth.currentUser;
+    doctorScheduleCollection.doc(user.uid).update({day: map});
   }
 
   // // get brews stream
   // Stream<List<DoctorData>> get doctors {
   //   return doctorsCollection.snapshots().map(_doctorListFromSnapshot);
   // }
+
+  Stream<DocSchedule> get scheduleData {
+    return doctorScheduleCollection
+        .doc(uid)
+        .snapshots()
+        .map(_scheduleDataFromSnapshot);
+  }
+
+  DocSchedule _scheduleDataFromSnapshot(DocumentSnapshot snapshot) {
+    return DocSchedule(
+      monday: snapshot.data()["Monday"] ?? null,
+      tuesday: snapshot.data()["Tuesday"] ?? null,
+      wednesday: snapshot.data()["Wednesday"] ?? null,
+      thursday: snapshot.data()["Thursday"] ?? null,
+      friday: snapshot.data()["Friday"] ?? null,
+      saturday: snapshot.data()["Saturday"] ?? null,
+      sunday: snapshot.data()["Sunday"] ?? null,
+    );
+  }
 
   // // get user doc stream
   Stream<DoctorData> get userData {
@@ -230,12 +223,6 @@ class DatabaseService {
   //     );
   //   }).toList();
   // }
-  Stream schedule(doctorId) {
-    return doctorScheduleCollection
-        .doc(doctorId)
-        .snapshots()
-        .map(_scheduleDataFromSnapshot);
-  }
 
   Stream<PatientData> patientData(patientId) {
     return usersCollection
@@ -298,6 +285,7 @@ class DatabaseService {
             DateTime.parse(document.data()['time'].toDate().toString());
 
         return Appointment(
+            id: document.id ?? "",
             userId: document.data()['userId'] ?? "",
             approval: document.data()['approval'] ?? "",
             bookedAt: bookedAt,
