@@ -270,7 +270,7 @@ class _RegisterState extends State<Register> {
                                 controller: number,
                                 decoration: textInputDecoration.copyWith(
                                     hintText: "Appointment Price"),
-                                onSaved: (input) =>
+                                onChanged: (input) =>
                                     price = double.tryParse(input),
                               ),
                               // TextFormField(

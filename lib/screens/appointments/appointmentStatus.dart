@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:oria_doctor/Models/Appointment.dart';
 import 'package:oria_doctor/screens/appointments/appointmentNotes.dart';
 import 'package:oria_doctor/shared/loadingWidget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppointmentStatus extends StatefulWidget {
   final String appointmentId;
@@ -16,11 +16,44 @@ class _AppointmentStatusState extends State<AppointmentStatus> {
   bool loading = false;
   var appointment;
   var user;
+  String dropdownValue = 'Accept';
+
+  final String phone = 'tel:+254799698998';
 
   @override
   void initState() {
     super.initState();
     getSchedule();
+  }
+
+  _callPhone() async {
+    if (await canLaunch(phone)) {
+      await launch(phone);
+    } else {
+      throw 'Could not Call Phone';
+    }
+  }
+
+  _appointmentStatus(String confirmation) async {
+    setState(() {
+      loading = true;
+    });
+    try {
+      await FirebaseFirestore.instance
+          .collection("appointments")
+          .doc(widget.appointmentId)
+          .update({"approval": confirmation});
+      getSchedule();
+      setState(() {
+        loading = false;
+      });
+    } catch (e) {
+      print(e.toString());
+      setState(() {
+        loading = false;
+      });
+      return null;
+    }
   }
 
   getSchedule() async {
@@ -244,26 +277,37 @@ class _AppointmentStatusState extends State<AppointmentStatus> {
                     ),
                   ),
                   appointment["approval"] == "Booked"
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            RaisedButton.icon(
-                                onPressed: null,
-                                icon: Icon(Icons.message),
-                                label: Text("Message")),
-                            RaisedButton.icon(
-                                onPressed: null,
-                                icon: Icon(Icons.call),
-                                label: Text("Call")),
-                            RaisedButton.icon(
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => AppointmentNotes(),
-                                    )),
-                                icon: Icon(Icons.play_arrow),
-                                label: Text("Start Meeting")),
-                          ],
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              FloatingActionButton.extended(
+                                  backgroundColor: Colors.green,
+                                  heroTag: "buttonMessage",
+                                  onPressed: null,
+                                  icon: Icon(Icons.message),
+                                  label: Text("Message")),
+                              FloatingActionButton.extended(
+                                  backgroundColor: Colors.green,
+                                  heroTag: "ButtonCall",
+                                  onPressed: () => _callPhone(),
+                                  icon: Icon(Icons.call),
+                                  label: Text("Call")),
+                              FloatingActionButton.extended(
+                                  backgroundColor: Colors.green,
+                                  heroTag: "buttonStartMeeting",
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AppointmentNotes(
+                                            appointmentId:
+                                                widget.appointmentId),
+                                      )),
+                                  icon: Icon(Icons.play_arrow),
+                                  label: Text("Start Meeting")),
+                            ],
+                          ),
                         )
                       : SizedBox(),
                   appointment["approval"] == "Rejected"
@@ -283,6 +327,23 @@ class _AppointmentStatusState extends State<AppointmentStatus> {
                       ? Column(
                           children: [
                             Text("Please input your decision"),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                FlatButton.icon(
+                                    color: Colors.greenAccent,
+                                    onPressed: () =>
+                                        _appointmentStatus("Booked"),
+                                    icon: Icon(Icons.done),
+                                    label: Text("Approve")),
+                                FlatButton.icon(
+                                    color: Colors.redAccent,
+                                    onPressed: () =>
+                                        _appointmentStatus("Rejected"),
+                                    icon: Icon(Icons.clear),
+                                    label: Text("Reject")),
+                              ],
+                            )
                           ],
                         )
                       : SizedBox(),

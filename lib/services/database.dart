@@ -9,7 +9,6 @@ import 'package:oria_doctor/Models/Appointment.dart';
 import 'package:oria_doctor/Models/DocSchedule.dart';
 import 'package:oria_doctor/Models/Doctor.dart';
 import 'package:oria_doctor/Models/UserData.dart';
-import 'package:oria_doctor/Models/scheduleTime.dart';
 
 class DatabaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -97,6 +96,7 @@ class DatabaseService {
       double price,
       String description,
       String study}) async {
+    await doctorScheduleCollection.doc(uid).set({"initial": true});
     return await doctorsCollection.doc(uid).set({
       "email": email,
       "name": name,
@@ -232,8 +232,6 @@ class DatabaseService {
   }
 
   Stream<List<Appointment>> homeAppointmentData(doctorId) {
-    DateTime now = DateTime.now();
-    DateTime tomorrow = now.add(Duration(days: 1));
     return appointmentCollection
         .where("doctorId", isEqualTo: doctorId)
         .orderBy("time")

@@ -7,6 +7,7 @@ import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:oria_doctor/Models/Doctor.dart';
 import 'package:oria_doctor/Models/Message.dart';
+import 'package:oria_doctor/screens/profile/profile.dart';
 import 'package:oria_doctor/services/auth.dart';
 import 'package:oria_doctor/services/database.dart';
 import 'package:oria_doctor/shared/loadingWidget.dart';
@@ -129,9 +130,10 @@ class _HomeMainState extends State<HomeMain> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // CircleAvatar                                                                                                                                                                                      //   backgroundImage: NetworkImage(
-                        //       "https://firebasestorage.googleapis.com/v0/b/oria-68e38.appspot.com/o/userImages%2Fperson1.jpg?alt=media&token=f94732ef-c7c4-4e13-b58a-3346299301f5"),
-                        // ),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              "https://firebasestorage.googleapis.com/v0/b/oria-68e38.appspot.com/o/userImages%2Fperson1.jpg?alt=media&token=f94732ef-c7c4-4e13-b58a-3346299301f5"),
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Column(
@@ -143,6 +145,12 @@ class _HomeMainState extends State<HomeMain> {
                                         fontFamily: "Poppins")),
                                 leading:
                                     Icon(Icons.person, color: Colors.white),
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Profile(
+                                              doctorData: userData,
+                                            ))),
                               ),
                               ListTile(
                                 title: Text(
