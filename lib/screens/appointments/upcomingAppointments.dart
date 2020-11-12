@@ -20,20 +20,21 @@ class _UpcomingAppointmentsState extends State<UpcomingAppointments> {
         child: Scaffold(
           backgroundColor: Color.fromRGBO(247, 249, 249, 1),
           appBar: AppBar(
-            automaticallyImplyLeading: false,
             elevation: 0.0,
-            title: Text(
-              "Oria Doctor",
-              style: TextStyle(
-                  // fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 24.0,
-                  // letterSpacing: 1.5,
-                  fontFamily: "Poppins"),
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () => Navigator.pop(context),
             ),
             backgroundColor: Color.fromRGBO(247, 249, 249, 1),
           ),
-          body: Container(child: SizedBox(child: AppointmentList())),
+          body: Container(
+              child: SizedBox(
+            child: AppointmentList(),
+          )),
         ));
   }
 }

@@ -140,14 +140,13 @@ class DatabaseService {
       uid: uid,
       name: snapshot.data()['name'] ?? "",
       email: snapshot.data()['email'] ?? "",
-      profilePicture: snapshot.data()['profilePicture'] ?? "",
       specialty: snapshot.data()['specialty'] ?? "",
       appointmentPrice: snapshot.data()['appointmentPrice'] ?? 0,
       location: snapshot.data()['position'] ?? {},
       experience: snapshot.data()['experience'] ?? 0,
       description: snapshot.data()['description'] ?? "",
       numRated: snapshot.data()['numRated'] ?? 0,
-      pictureLink: snapshot.data()['pictureLink'] ?? "",
+      pictureLink: snapshot.data()['image'] ?? null,
       totalRatings: snapshot.data()['totalRatings'] ?? 0,
       location1: snapshot.data()['location1'] ?? "",
       location2: snapshot.data()['location2'] ?? "",
@@ -293,6 +292,22 @@ class DatabaseService {
     } catch (e) {
       print(e.toString());
       return null;
+    }
+  }
+
+  Future updateImage({String uid, String url}) async {
+    try {
+      await doctorsCollection.doc(uid).update({"image": url});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future removeImage({String uid}) async {
+    try {
+      await doctorsCollection.doc(uid).update({"image": null});
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
@@ -61,6 +60,7 @@ class _HomeMainState extends State<HomeMain> {
       iosSubscription =
           _firebaseMessaging.onIosSettingsRegistered.listen((event) {
         databaseService.saveDeviceToken();
+        iosSubscription.cancel();
       });
       _firebaseMessaging.requestNotificationPermissions(
           const IosNotificationSettings(sound: true, alert: true, badge: true));
@@ -131,8 +131,11 @@ class _HomeMainState extends State<HomeMain> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              "https://firebasestorage.googleapis.com/v0/b/oria-68e38.appspot.com/o/userImages%2Fperson1.jpg?alt=media&token=f94732ef-c7c4-4e13-b58a-3346299301f5"),
+                          backgroundImage: userData.pictureLink != null
+                              ? NetworkImage(userData.pictureLink)
+                              : AssetImage(
+                                  "assets/images/person_placeholder.png"),
+                          radius: 50.0,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -142,40 +145,28 @@ class _HomeMainState extends State<HomeMain> {
                                 title: Text("My Profile",
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontFamily: "Poppins")),
+                                        fontFamily: "Poppins",
+                                        fontSize: 14.0)),
                                 leading:
                                     Icon(Icons.person, color: Colors.white),
                                 onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Profile(
-                                              doctorData: userData,
-                                            ))),
-                              ),
-                              ListTile(
-                                title: Text(
-                                  "Messages",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Poppins"),
-                                ),
-                                leading: Icon(
-                                  Icons.message,
-                                  color: Colors.white,
-                                ),
+                                        builder: (context) => Profile())),
                               ),
                               ListTile(
                                 title: Text("Settings",
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontFamily: "Poppins")),
+                                        fontFamily: "Poppins",
+                                        fontSize: 14.0)),
                                 leading:
                                     Icon(Icons.settings, color: Colors.white),
                               ),
                               ListTile(
                                 title: Text("Sign Out",
                                     style: TextStyle(
-                                        fontSize: 20.0,
+                                        fontSize: 16.0,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                         fontFamily: "Poppins")),
@@ -278,12 +269,15 @@ class _HomeMainState extends State<HomeMain> {
                                               "/upcoming-appointments"),
                                           contentPadding: EdgeInsets.symmetric(
                                               vertical: 8.0, horizontal: 10.0),
-                                          title: Text(
-                                            "Upcoming Appointments",
-                                            style: TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: "Poppins"),
+                                          title: Hero(
+                                            tag: "upcoming-appointments",
+                                            child: Text(
+                                              "Upcoming Appointments",
+                                              style: TextStyle(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: "Poppins"),
+                                            ),
                                           ),
                                           leading: Icon(
                                             Icons.book,

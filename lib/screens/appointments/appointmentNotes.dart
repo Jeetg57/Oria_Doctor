@@ -10,7 +10,6 @@ class AppointmentNotes extends StatefulWidget {
 }
 
 class _AppointmentNotesState extends State<AppointmentNotes> {
-  final _formKey = GlobalKey<FormState>();
   String ailment = "";
   bool loading = false;
   String notes = "";

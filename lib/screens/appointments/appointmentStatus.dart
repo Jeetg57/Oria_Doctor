@@ -277,17 +277,15 @@ class _AppointmentStatusState extends State<AppointmentStatus> {
                     ),
                   ),
                   appointment["approval"] == "Booked"
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      ? Container(
+                          alignment: Alignment.bottomCenter,
+                          child: Wrap(
+                            spacing: 20.0,
+                            runSpacing: 8.0,
+                            direction: Axis.horizontal,
+                            runAlignment: WrapAlignment.spaceEvenly,
+                            alignment: WrapAlignment.spaceEvenly,
                             children: [
-                              FloatingActionButton.extended(
-                                  backgroundColor: Colors.green,
-                                  heroTag: "buttonMessage",
-                                  onPressed: null,
-                                  icon: Icon(Icons.message),
-                                  label: Text("Message")),
                               FloatingActionButton.extended(
                                   backgroundColor: Colors.green,
                                   heroTag: "ButtonCall",
@@ -296,6 +294,12 @@ class _AppointmentStatusState extends State<AppointmentStatus> {
                                   label: Text("Call")),
                               FloatingActionButton.extended(
                                   backgroundColor: Colors.green,
+                                  heroTag: "buttonMessage",
+                                  onPressed: null,
+                                  icon: Icon(Icons.message),
+                                  label: Text("Message")),
+                              FloatingActionButton.extended(
+                                  backgroundColor: Colors.black,
                                   heroTag: "buttonStartMeeting",
                                   onPressed: () => Navigator.push(
                                       context,

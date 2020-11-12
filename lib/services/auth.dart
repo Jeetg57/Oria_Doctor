@@ -1,9 +1,4 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:oria_doctor/Models/Doctor.dart';
 import 'package:oria_doctor/services/database.dart';
 
