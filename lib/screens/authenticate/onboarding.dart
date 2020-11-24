@@ -19,7 +19,6 @@ class _OnBoardingState extends State<OnBoarding> {
     }
 
     double devHeight = MediaQuery.of(context).size.height;
-    double devWidth = MediaQuery.of(context).size.width;
 
     List<PageViewModel> listPagesViewModel = [
       PageViewModel(

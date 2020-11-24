@@ -17,7 +17,7 @@ class Wrapper extends StatelessWidget {
       return boolValue;
     }
 
-    if (checkOnboarding() == true || checkOnboarding() == null) {
+    if (checkOnboarding() == null) {
       return OnBoarding();
     } else if (user == null) {
       return Authenticate();
