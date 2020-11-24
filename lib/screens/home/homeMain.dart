@@ -32,6 +32,9 @@ class _HomeMainState extends State<HomeMain> {
         onMessage: (Map<String, dynamic> message) async {
       print("onMessage: $message");
       final notification = message['notification'];
+      messages.add(
+          Message(title: notification['title'], body: notification['body']));
+
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -48,9 +51,6 @@ class _HomeMainState extends State<HomeMain> {
                   ),
                 ],
               )); // setState(() {
-      //   messages.add(
-      //       Message(title: notification['title'], body: notification['body']));
-      // });
     }, onLaunch: (Map<String, dynamic> message) async {
       print("onMLaunch: $message");
     }, onResume: (Map<String, dynamic> message) async {
@@ -338,48 +338,6 @@ class _HomeMainState extends State<HomeMain> {
                               children: messages.map(buildMessage).toList(),
                             ),
                           )
-                          // Row(
-                          //   children: [
-                          //     Expanded(
-                          //       flex: 1,
-                          //       child: Container(
-                          //         child: Card(
-                          //           child: Column(
-                          //             crossAxisAlignment:
-                          //                 CrossAxisAlignment.end,
-                          //             children: [
-                          //               ListTile(
-                          //                 onTap: () => Navigator.pushNamed(
-                          //                     context, "/schedule-input"),
-                          //                 contentPadding: EdgeInsets.symmetric(
-                          //                     vertical: 8.0, horizontal: 10.0),
-                          //                 title: Text(
-                          //                   "Schedule",
-                          //                   style: TextStyle(
-                          //                       fontSize: 20.0,
-                          //                       fontWeight: FontWeight.bold,
-                          //                       fontFamily: "Poppins"),
-                          //                 ),
-                          //                 leading: Icon(
-                          //                   Icons.timer,
-                          //                   size: 40.0,
-                          //                   color: Colors.green,
-                          //                 ),
-                          //                 subtitle: Text(
-                          //                   "Edit my schedule",
-                          //                   style: TextStyle(
-                          //                       fontSize: 14.0,
-                          //                       color: Colors.grey,
-                          //                       fontFamily: "Poppins"),
-                          //                 ),
-                          //               ),
-                          //             ],
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // )
                         ],
                       ),
                     )));

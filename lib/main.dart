@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:oria_doctor/screens/appointments/upcomingAppointments.dart';
+import 'package:oria_doctor/screens/authenticate/authenticate.dart';
 import 'package:oria_doctor/screens/schedule/ScheduleInput.dart';
 import 'package:oria_doctor/screens/wrapper.dart';
 import 'package:oria_doctor/services/auth.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => Wrapper(),
           // When navigating to the "/second" route, build the SecondScreen widget.
           // '/doctors': (context) => Doctors(),
+          '/login': (context) => Authenticate(),
           '/upcoming-appointments': (context) => UpcomingAppointments(),
           '/schedule-input': (context) => ScheduleInput(),
 
